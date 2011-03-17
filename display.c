@@ -12,11 +12,15 @@
 #include "display.h"
 
 int count = 0;
+int keyPressed[256]; //holds key states for movement purposes
 
 void init(void)
 {
    glClearColor(1.0, 1.0, 1.0, 1.0);
    glLineWidth(2.0);
+   //key cant be continually registered
+   //will implement later
+   //glutIgnoreKeyRepeat(1);
    printf ("just setting up the test scene\n");
 }
 
@@ -47,8 +51,11 @@ void display(void)
 		cameraLook[0], cameraLook[1], cameraLook[2],
 		0,1,0);
 
-	glColor3f(1.0, 0.0, 1.0);
-   
+	
+	
+	drawRoom();
+
+	glColor3f(1.0, 0.0, 1.0);   
 	//draw
 	glTranslatef(0.0, 5.0, -10.0);  // position in frustum
 	//glScalef(1.0, 2.0, 1.0);        // elongate cube
@@ -91,6 +98,51 @@ void keyboard(unsigned char key, int x, int y)
       default:
          break;
    }
+   keyPressed[key] = 1;
+}
+
+void keyUp(unsigned char key, int x, int y)
+{
+	keyPressed[key] = 0;
+}
+
+void drawRoom()
+{
+	glBegin(GL_QUADS);
+	glColor3f(0.0, 0.0, 0.0);
+	/* Floor */
+	glVertex3f(-50,-1,-50);
+	glVertex3f(50,-1,-50);
+	glVertex3f(50,-1,50);
+	glVertex3f(-50,-1,50);
+	glColor3f(1.0, 0.0, 0.0);
+	/* Ceiling */
+	glVertex3f(-50,15,-50);
+	glVertex3f(50,15,-50);
+	glVertex3f(50,15,50);
+	glVertex3f(-50,15,50);
+	glColor3f(0.0, 1.0, 0.0);
+	/* Walls */
+	glVertex3f(-50,-1,50);
+	glVertex3f(50,-1,50);
+	glVertex3f(50,15,50);
+	glVertex3f(-50,15,50);
+	glColor3f(0.0, 0.0, 1.0);
+	glVertex3f(-50,-1,-50);
+	glVertex3f(50,-1,-50);
+	glVertex3f(50,15,-50);
+	glVertex3f(-50,15,-50);
+	glColor3f(1.0, 1.0, 0.0);
+	glVertex3f(50,15,50);
+	glVertex3f(50,-1,50);
+	glVertex3f(50,-1,-50);
+	glVertex3f(50,15,-50);
+	glColor3f(0.0, 1.0, 1.0);
+	glVertex3f(-50,15,50);
+	glVertex3f(-50,-1,50);
+	glVertex3f(-50,-1,-50);
+	glVertex3f(-50,15,-50);
+	glEnd();
 }
 
 int main(int argc, char **argv)
@@ -105,6 +157,7 @@ int main(int argc, char **argv)
 	glutReshapeFunc(reshape);
 	glutDisplayFunc(display);
 	glutKeyboardFunc(keyboard);
+	glutKeyboardUpFunc(keyUp);
 	glEnable(GL_DEPTH_TEST);
 	
 	glutMainLoop();
