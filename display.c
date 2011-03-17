@@ -11,10 +11,12 @@
 #include "camera.h"
 #include "display.h"
 #include "bullet.h"
+#include "zombie.h"
 
 int count = 0;
 int keyPressed[256]; //holds key states for movement purposes
 Bullet bullets[MAX_BULLETS];
+Zombie zombies[MAX_ZOMBIES];
 int bulletIndex = 0;
 
 void init(void)
@@ -79,6 +81,9 @@ void display(void)
 
 void keyboard(unsigned char key, int x, int y)
 {
+	double* location;
+	double bulletLoc[3];
+	double heading;
 	switch (key) {
 		case 27:
 			exit(0);
@@ -87,9 +92,11 @@ void keyboard(unsigned char key, int x, int y)
 			//draw bullet here
 			//Y U NO WORK?!?!
 			//printf("drawing bullet\n");
-			double* location = getCameraLoc(); //bullet starts at camera
-			double bulletLoc[3] = {location[0], location[1], location[2]};
-			double heading = getCameraHeading(); // bullet shoots in the direction we are looking
+			location = getCameraLoc(); //bullet starts at camera
+			bulletLoc[0] = location[0];
+			bulletLoc[1] = location[1];
+			bulletLoc[2] = location[2];
+			heading = getCameraHeading(); // bullet shoots in the direction we are looking
 			bulletLoc[1] -= 2; //lower the bullet hieght a little
 			bullets[bulletIndex] = createBullet(3, heading, bulletLoc);
 			bulletIndex = (bulletIndex + 1) % MAX_BULLETS;

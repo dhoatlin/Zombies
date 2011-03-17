@@ -87,7 +87,6 @@ void lookRight()
 }
 
 //take a step back
-//this math is wrong
 void backUp()
 {
 	camera.location[0] -= sin(camera.heading) * camera.speed;
@@ -97,7 +96,6 @@ void backUp()
 }
 
 //take a step forward
-//this math is wrong
 void moveForward()
 {
 	camera.location[0] += sin(camera.heading) * camera.speed;

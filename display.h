@@ -4,6 +4,7 @@
 
 #define MOVE_TIME 20
 #define MAX_BULLETS 100
+#define MAX_ZOMBIES 25
 
 void init(void);
 void reshape(int w, int h);
