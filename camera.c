@@ -14,7 +14,7 @@ Camera camera;
 void initCamera()
 {
 	//how far the player can walk with one key press
-	camera.speed = 1.0;
+	camera.speed = 2.0;
 
 	//The direction the player is facing
 	camera.heading = 0.0;
@@ -40,6 +40,11 @@ double* getCameraLoc()
 double* getCameraLook()
 {
 	return camera.direction;
+}
+
+double getCameraHeading()
+{
+	return camera.heading;
 }
 
 //step to the left
@@ -85,8 +90,8 @@ void lookRight()
 //this math is wrong
 void backUp()
 {
-	camera.location[0] -= sin(camera.heading) * 2.0;
-	camera.location[2] += cos(camera.heading) * 2.0;
+	camera.location[0] -= sin(camera.heading) * camera.speed;
+	camera.location[2] += cos(camera.heading) * camera.speed;
 	
 	computeDirection();
 }
@@ -95,8 +100,8 @@ void backUp()
 //this math is wrong
 void moveForward()
 {
-	camera.location[0] += sin(camera.heading) * 2.0;
-	camera.location[2] -= cos(camera.heading) * 2.0;
+	camera.location[0] += sin(camera.heading) * camera.speed;
+	camera.location[2] -= cos(camera.heading) * camera.speed;
 	
 	computeDirection();
 }

@@ -20,6 +20,7 @@ typedef struct
 
 double* getCameraLoc();
 double* getCameraLook();
+double getCameraHeading();
 void update();
 void printCam();
 void strafeLeft();
