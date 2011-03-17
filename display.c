@@ -20,7 +20,7 @@ void init(void)
    glLineWidth(2.0);
    //key cant be continually registered
    //will implement later
-   //glutIgnoreKeyRepeat(1);
+   glutIgnoreKeyRepeat(1);
    printf ("just setting up the test scene\n");
 }
 
@@ -79,22 +79,6 @@ void keyboard(unsigned char key, int x, int y)
       case 27:
          exit(0);
          break;
-	  case 'w':
-		  moveForward();
-		  display();
-		  break;
-	  case 'a':
-		  lookLeft();
-		  display();
-		  break;
-	  case 's':
-		  backUp();
-		  display();
-		  break;
-	  case 'd':
-		  lookRight();
-		  display();
-		  break;
       default:
          break;
    }
@@ -104,6 +88,25 @@ void keyboard(unsigned char key, int x, int y)
 void keyUp(unsigned char key, int x, int y)
 {
 	keyPressed[key] = 0;
+}
+
+void moveObjects()
+{
+	movePlayer();
+	display();
+	glutTimerFunc(MOVE_TIME, moveObjects, 0);
+}
+
+void movePlayer()
+{
+	if(keyPressed['w'] == 1)
+		moveForward();
+	if(keyPressed['a'] == 1)
+		lookLeft();
+	if(keyPressed['s'] == 1)
+		backUp();
+	if(keyPressed['d'] == 1)
+		lookRight();
 }
 
 void drawRoom()
@@ -121,22 +124,26 @@ void drawRoom()
 	glVertex3f(50,15,-50);
 	glVertex3f(50,15,50);
 	glVertex3f(-50,15,50);
-	glColor3f(0.0, 1.0, 0.0);
+	
 	/* Walls */
+	glColor3f(0.0, 1.0, 0.0);
 	glVertex3f(-50,-1,50);
 	glVertex3f(50,-1,50);
 	glVertex3f(50,15,50);
 	glVertex3f(-50,15,50);
+	
 	glColor3f(0.0, 0.0, 1.0);
 	glVertex3f(-50,-1,-50);
 	glVertex3f(50,-1,-50);
 	glVertex3f(50,15,-50);
 	glVertex3f(-50,15,-50);
+	
 	glColor3f(1.0, 1.0, 0.0);
 	glVertex3f(50,15,50);
 	glVertex3f(50,-1,50);
 	glVertex3f(50,-1,-50);
 	glVertex3f(50,15,-50);
+	
 	glColor3f(0.0, 1.0, 1.0);
 	glVertex3f(-50,15,50);
 	glVertex3f(-50,-1,50);
@@ -158,6 +165,7 @@ int main(int argc, char **argv)
 	glutDisplayFunc(display);
 	glutKeyboardFunc(keyboard);
 	glutKeyboardUpFunc(keyUp);
+	glutTimerFunc(MOVE_TIME, moveObjects, 0);
 	glEnable(GL_DEPTH_TEST);
 	
 	glutMainLoop();
