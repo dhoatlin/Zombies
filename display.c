@@ -64,6 +64,7 @@ void keyboard(unsigned char key, int x, int y)
 {
 	double* location;
 	double bulletLoc[3];
+	double randLoc[3];
 	double heading;
 	switch (key) {
 		case 27:
@@ -76,13 +77,19 @@ void keyboard(unsigned char key, int x, int y)
 			bulletLoc[1] = location[1];
 			bulletLoc[2] = location[2];
 			heading = getCameraHeading(); // bullet shoots in the direction we are looking
-			createZombie(.7, bulletLoc, 100);
+			//createZombie(.7, bulletLoc, 100);
 			bulletLoc[1] -= 2; //lower the bullet hieght a little
 			createBullet(5, heading, bulletLoc);
 			
 			//drawing zombie on space for now
 			
 			
+			break;
+		case 'z':
+			randLoc[0] = (rand() % (ROOM_SIZE * 2)) - ROOM_SIZE;
+			randLoc[1] = 3;
+			randLoc[2] = (rand() % (ROOM_SIZE * 2)) - ROOM_SIZE;
+			createZombie(.7, randLoc, 5);
 			break;
 		default:
 			break;
@@ -100,6 +107,7 @@ void moveObjects()
 	movePlayer();
 	moveBullets();
 	moveZombies();
+	checkBulletHit();
 	display();
 	glutTimerFunc(MOVE_TIME, moveObjects, 0);
 }
@@ -218,9 +226,40 @@ void drawZombies()
 	}
 }
 
+void checkBulletHit()
+{
+	int i, j;
+	double xDifSq, zDifSq, distance;
+	for(i = 0; i < MAX_ZOMBIES; i++)
+	{
+		if(zombies[i].alive == 1)
+		{
+			for(j = 0; j < MAX_BULLETS; j++)
+			{
+				if(bullets[j].alive == 1)
+				{
+					distance = distanceSq(zombies[i].location[0], zombies[i].location[2], bullets[j].location[0], bullets[j].location[2]);
+					if(distance < 5)
+					{
+						printf("hit detected\n");
+						destroyBullet(j);
+						zombieDamage(i);
+					}
+				}
+			}
+		}
+	}
+}
+
+double distanceSq(double x1, double y1, double x2, double y2)
+{
+	return pow(x1-x2, 2) + pow(y1-y2, 2);
+}
+
 int main(int argc, char **argv)
 {
 	initCamera();
+	srand(time(NULL));
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB | GLUT_DEPTH);
 	glutInitWindowSize(500, 500);

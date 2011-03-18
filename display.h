@@ -17,3 +17,5 @@ void moveObjects();
 void movePlayer();
 void moveBullets();
 void moveZombies();
+void checkBulletHit();
+double distanceSq(double x1, double y1, double x2, double y2);

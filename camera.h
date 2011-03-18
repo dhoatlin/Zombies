@@ -3,6 +3,7 @@
 */
 
 #define PI 3.14159265
+#define PLAYER_SPACING 5
 
 typedef struct
 {

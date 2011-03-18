@@ -20,5 +20,6 @@ Zombie zombies[MAX_ZOMBIES];
 
 void createZombie(double pSpeed, double* plocation, double phealth);
 void moveZombie(int id);
+void zombieDamage(int id);
 void updateHeadings(double* pLocation);
 

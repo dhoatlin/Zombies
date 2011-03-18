@@ -7,11 +7,13 @@
 #include "display.h"
 #include "bullet.h"
 
+
+
 int bulletIndex = 0;
 
 void createBullet(double pSpeed, double pHeading, double* pLocation)
 {
-	printf("adding bullet at index %d\n", bulletIndex);
+	//printf("adding bullet at index %d\n", bulletIndex);
 	//Bullet bullet = bullets[bulletIndex];
 	//bulletIndex = (bulletIndex + 1) % MAX_BULLETS;
 	
@@ -38,10 +40,15 @@ void moveBullet(int id)
 	//printf("%f, %f\n", bullets[id].location[0], bullets[id].location[2]);
 	if(bullets[id].location[0] > ROOM_SIZE || bullets[id].location[0] < (ROOM_SIZE * -1))
 	{
-		bullets[id].alive = 0;
+		destroyBullet(id);
 	}
 	if(bullets[id].location[2] > ROOM_SIZE || bullets[id].location[2] < (ROOM_SIZE * -1))
 	{
-		bullets[id].alive = 0;
+		destroyBullet(id);
 	}	
+}
+
+void destroyBullet(int id)
+{
+	bullets[id].alive = 0;
 }

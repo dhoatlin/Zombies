@@ -19,6 +19,7 @@ void createZombie(double zSpeed, double* zlocation, double zhealth)
 	Zombie zombie;
 	
 	zombie.alive = 1;
+	zombie.health = zhealth;
 	zombie.speed = zSpeed;
 	zombie.heading = 0;
 	zombie.location[0] = zlocation[0];
@@ -45,22 +46,22 @@ void updateZombieHeadings(double* pLocation)
 			//finding quadrant relative to zombie
 			if(xdif < 0 && zdif < 0) //Q1
 			{
-				printf("quad1\n");
+				//printf("quad1\n");
 				zombies[i].heading = -1 * (atan(absZ/absX));
 			}
 			else if(xdif < 0 && zdif > 0) //Q2
 			{
-				printf("quad2\n");
+				//printf("quad2\n");
 				zombies[i].heading = -1 * (atan(absX/absZ) + (PI/2));
 			}
 			else if(xdif > 0 && zdif > 0) //Q3
 			{
-				printf("quad3\n");
+				//printf("quad3\n");
 				zombies[i].heading = -1 * (atan(absZ/absX) + PI);
 			}
 			else if(xdif > 0 && zdif < 0) //Q4
 			{
-				printf("quad4\n");
+				//printf("quad4\n");
 				zombies[i].heading = -1 * (atan(absX/absZ) + (3*PI/2));
 			}
 			else
@@ -81,6 +82,16 @@ void moveZombie(int id)
 		zombies[id].alive = 0;
 	}
 	if(zombies[id].location[2] > ROOM_SIZE || zombies[id].location[2] < (ROOM_SIZE * -1))
+	{
+		zombies[id].alive = 0;
+	}
+}
+
+void zombieDamage(int id)
+{
+	zombies[id].health -= 1;
+	//if dead
+	if(zombies[id].health < 1)
 	{
 		zombies[id].alive = 0;
 	}

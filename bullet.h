@@ -20,3 +20,4 @@ Bullet bullets[MAX_BULLETS];
 
 void createBullet(double pSpeed, double pHeading, double* pLocation);
 void moveBullet(int id);
+void destroyBullet(int id);
