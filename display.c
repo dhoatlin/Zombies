@@ -9,6 +9,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <math.h>
 #include <GL/glut.h>
 
 #include "camera.h"
@@ -20,6 +21,7 @@ int count = 0;
 int keyPressed[256]; //holds key states for movement purposes
 
 int mainWindow, radar;
+int killCount = 0;
 
 void init(void)
 {
@@ -274,9 +276,9 @@ void checkBulletHit()
 					distance = distanceSq(zombies[i].location[0], zombies[i].location[2], bullets[j].location[0], bullets[j].location[2]);
 					if(distance < 5)
 					{
-						printf("hit detected\n");
+						//printf("hit detected\n");
 						destroyBullet(j);
-						zombieDamage(i);
+						killCount += zombieDamage(i); //will eventually render to screen
 					}
 				}
 			}

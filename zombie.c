@@ -2,8 +2,10 @@
 * Handles zomebie creation, movement, and destruction
 */
 
-#include "zombie.h"
+
 #include <math.h>
+#include <stdio.h>
+#include "zombie.h"
 #include "display.h"
 #include "camera.h"
 
@@ -12,7 +14,7 @@ int zombieIndex = 0;
 //create a zombie and store it in the zombies container
 void createZombie(double zSpeed, double* zlocation, double zhealth)
 {
-	printf("zombie added\n");
+	//printf("zombie added\n");
 	Zombie zombie;
 	
 	zombie.alive = 1;
@@ -89,12 +91,14 @@ void moveZombie(int id)
 }
 
 //decrease health if the zombie is hit
-void zombieDamage(int id)
+int zombieDamage(int id)
 {
 	zombies[id].health -= 1;
 	//if dead
 	if(zombies[id].health < 1)
 	{
 		zombies[id].alive = 0;
+		return 1; //if zombie is killed
 	}
+	return 0; //if not killed
 }

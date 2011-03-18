@@ -1,0 +1,15 @@
+Zombie Survival is a first person shooter. Your goal is to kill the zombies
+before they catch you. Kill count is being kept track of but not being rendered.
+
+To compile run the shell script. It will automatically compile and execute the
+program.
+
+Directions:
+
+'w': move forward
+'s': move backward
+'a': look left
+'d': look right
+
+' ': shoot
+'z': spawn zombie 
