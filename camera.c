@@ -1,5 +1,5 @@
 /*
-* Handles everything involving the camera
+* Moves the players vision around
 */
 
 #include <stdlib.h>
@@ -47,16 +47,18 @@ double getCameraHeading()
 	return camera.heading;
 }
 
-//step to the left
-//this math is wrong
+//original strafe functions
+//currently not used
+//need to change the math
 void strafeLeft()
 {
 	camera.location[0] -= camera.speed;
 	camera.direction[0] -= camera.speed;
 }
 
-//step to the right
-//this math is wrong
+//original strafe functions
+//currently not used
+//need to change the math
 void strafeRight()
 {
 	camera.location[0] += camera.speed;
@@ -67,7 +69,7 @@ void strafeRight()
 void lookLeft()
 {
 	//move heading 1 degree to the left
-	camera.heading -= (PI / 45.0);
+	camera.heading -= (PI / 90.0);
 	if(camera.heading < 0.0) //heading is back at origin
 	{
 		camera.heading = PI*2.0;
@@ -78,7 +80,7 @@ void lookLeft()
 //rotate camera to the right
 void lookRight()
 {
-	camera.heading += PI / 45.0;
+	camera.heading += PI / 90.0;
 	if(camera.heading > PI*2.0) //heading is back at origin
 	{
 		camera.heading = 0.0;
@@ -110,12 +112,14 @@ void moveForward()
 	computeDirection();
 }
 
+//calculate the direction we are looking
 void computeDirection()
 {
 	camera.direction[0] = camera.location[0] + sin(camera.heading);
 	camera.direction[2] = camera.location[2] - cos(camera.heading);
 }
 
+//keeping the camera inside the room
 void checkBounds()
 {
 	if(camera.location[0] < (ROOM_SIZE * -1 + PLAYER_SPACING))
@@ -128,8 +132,8 @@ void checkBounds()
 	else if(camera.location[2] > ROOM_SIZE - PLAYER_SPACING)
 		camera.location[2] = ROOM_SIZE - PLAYER_SPACING;
 }
+
 //printing the camera coords to the console
-//for whatever reason this prints out garbage?
 void printCam()
 {
 	int i;

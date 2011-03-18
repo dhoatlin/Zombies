@@ -1,6 +1,9 @@
 /*
 * Handles all the openGL stuff to display images
 *
+* This also calls a lot of the game logic functions. Pretty much everything
+* happens here.
+*
 * Main method is also here
 */
 
@@ -16,12 +19,13 @@
 int count = 0;
 int keyPressed[256]; //holds key states for movement purposes
 
+int mainWindow, radar;
+
 void init(void)
 {
    glClearColor(1.0, 1.0, 1.0, 1.0);
    glLineWidth(2.0);
    glutIgnoreKeyRepeat(1);
-   printf ("just setting up the test scene\n");
 }
 
 
@@ -40,6 +44,7 @@ void reshape(int w, int h)
 
 void display(void)
 {
+	glutSetWindow(mainWindow);
 	double* cameraLoc = getCameraLoc();
 	double* cameraLook = getCameraLook();
 	
@@ -55,11 +60,25 @@ void display(void)
 	drawRoom();
 	drawBullets();
 	drawZombies();
+		
 
+	glFlush();
+	renderRadar();
+}
+
+//trying to make radar, but not rendering at all
+void renderRadar()
+{
+	glutSetWindow(radar);
+	//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	//glLoadIdentity();
+	double* location = getCameraLoc();
+	gluLookAt(location[0], 14, location[2], location[0], location[1], location[2], 0, 1, 0);
 	glFlush();
 }
 
-
+//handling all the keypresses
 void keyboard(unsigned char key, int x, int y)
 {
 	double* location;
@@ -77,14 +96,10 @@ void keyboard(unsigned char key, int x, int y)
 			bulletLoc[1] = location[1];
 			bulletLoc[2] = location[2];
 			heading = getCameraHeading(); // bullet shoots in the direction we are looking
-			//createZombie(.7, bulletLoc, 100);
-			bulletLoc[1] -= 2; //lower the bullet hieght a little
-			createBullet(5, heading, bulletLoc);
-			
-			//drawing zombie on space for now
-			
-			
+			bulletLoc[1] -= 2; //lower the bullet height a little
+			createBullet(5, heading, bulletLoc);			
 			break;
+		//spawn zombie on 'z'
 		case 'z':
 			randLoc[0] = (rand() % (ROOM_SIZE * 2)) - ROOM_SIZE;
 			randLoc[1] = 3;
@@ -94,14 +109,17 @@ void keyboard(unsigned char key, int x, int y)
 		default:
 			break;
 	}
+	//storing this key as pressed
 	keyPressed[key] = 1;
 }
 
+//reseting the key pressed to 0
 void keyUp(unsigned char key, int x, int y)
 {
 	keyPressed[key] = 0;
 }
 
+//move all the objects in the game around
 void moveObjects()
 {
 	movePlayer();
@@ -112,6 +130,7 @@ void moveObjects()
 	glutTimerFunc(MOVE_TIME, moveObjects, 0);
 }
 
+//calling the camera functions to move around playing area
 void movePlayer()
 {
 	if(keyPressed['w'] == 1)
@@ -124,6 +143,7 @@ void movePlayer()
 		lookRight();
 }
 
+//move all the bullets
 void moveBullets()
 {
 	int i;
@@ -134,6 +154,12 @@ void moveBullets()
 	}
 }
 
+//trying to move zombies toward player, kind of working but only by chance.
+//currently zombies move in a direction(not really towards the player) until 
+//they get to an axis. 
+//
+//when a zombie reaches an axis its heading bounces back and forth. it just so
+//happens that the result is towards the player.
 void moveZombies()
 {
 
@@ -145,8 +171,11 @@ void moveZombies()
 			moveZombie(i);
 		}
 	}
+	//update the direction of the zombies after moving
 	updateZombieHeadings(getCameraLoc());	
 }
+
+//draw the room
 void drawRoom()
 {
 	glBegin(GL_QUADS);
@@ -190,6 +219,7 @@ void drawRoom()
 	glEnd();
 }
 
+//draw all the bullets
 void drawBullets()
 {
 	int i;
@@ -210,6 +240,8 @@ void drawBullets()
 	}
 }
 
+//draw all the zombies. Would have liked to make arms/legs but spent too much
+//time on game logic. Currently zombies are just rendered as boxes
 void drawZombies()
 {
 	int i;
@@ -226,6 +258,7 @@ void drawZombies()
 	}
 }
 
+//collision detection for bullets and zombies
 void checkBulletHit()
 {
 	int i, j;
@@ -251,6 +284,7 @@ void checkBulletHit()
 	}
 }
 
+//just calculating the distance squared between two objects
 double distanceSq(double x1, double y1, double x2, double y2)
 {
 	return pow(x1-x2, 2) + pow(y1-y2, 2);
@@ -264,7 +298,7 @@ int main(int argc, char **argv)
 	glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB | GLUT_DEPTH);
 	glutInitWindowSize(500, 500);
 	glutInitWindowPosition(100, 100); 
-	glutCreateWindow("Zombie Survival");
+	mainWindow = glutCreateWindow("Zombie Survival");
 	init();
 	glutReshapeFunc(reshape);
 	glutDisplayFunc(display);
@@ -272,6 +306,11 @@ int main(int argc, char **argv)
 	glutKeyboardUpFunc(keyUp);
 	glutTimerFunc(MOVE_TIME, moveObjects, 0);
 	glEnable(GL_DEPTH_TEST);
+	
+	//setting up radar subwindow. not working correctly
+	radar = glutCreateSubWindow(mainWindow, 0, 400, 100, 100);
+	glutDisplayFunc(renderRadar);
+	init();
 	
 	glutMainLoop();
 	return 0;

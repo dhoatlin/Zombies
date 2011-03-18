@@ -1,5 +1,5 @@
 /*
-* Handles bullet movements
+* Handles bullet movements, creation, and destruction
 */
 
 #include <math.h>
@@ -11,6 +11,7 @@
 
 int bulletIndex = 0;
 
+//create a new bullet and store in the bullets container
 void createBullet(double pSpeed, double pHeading, double* pLocation)
 {
 	//printf("adding bullet at index %d\n", bulletIndex);
@@ -32,6 +33,7 @@ void createBullet(double pSpeed, double pHeading, double* pLocation)
 	//printf("bullet created\n");
 }
 
+//move the bullet according to its heading
 void moveBullet(int id)
 {
 	//printf("moving bullet\n");
@@ -48,6 +50,7 @@ void moveBullet(int id)
 	}	
 }
 
+//destroy the bullet if it leaves the room or hits a zombie
 void destroyBullet(int id)
 {
 	bullets[id].alive = 0;

@@ -2,10 +2,6 @@
 * Handles zomebie creation, movement, and destruction
 */
 
-//heading = tan(theta) opposite/adjacent
-//atan(xdif/zdif);
-
-
 #include "zombie.h"
 #include <math.h>
 #include "display.h"
@@ -13,6 +9,7 @@
 
 int zombieIndex = 0;
 
+//create a zombie and store it in the zombies container
 void createZombie(double zSpeed, double* zlocation, double zhealth)
 {
 	printf("zombie added\n");
@@ -30,6 +27,8 @@ void createZombie(double zSpeed, double* zlocation, double zhealth)
 	zombieIndex = (zombieIndex + 1) % MAX_ZOMBIES;
 }
 
+//trying to update the zombie heading to chase the player
+//currently not working that well, but the player is chased
 void updateZombieHeadings(double* pLocation)
 {
 	int i;
@@ -72,6 +71,8 @@ void updateZombieHeadings(double* pLocation)
 	}
 }
 
+//move the zombie according to its heading
+//for now i just destroy it if it makes it to a wall
 void moveZombie(int id)
 {
 	zombies[id].location[0] += sin(zombies[id].heading) * zombies[id].speed;
@@ -87,6 +88,7 @@ void moveZombie(int id)
 	}
 }
 
+//decrease health if the zombie is hit
 void zombieDamage(int id)
 {
 	zombies[id].health -= 1;
