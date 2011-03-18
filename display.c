@@ -76,7 +76,7 @@ void keyboard(unsigned char key, int x, int y)
 			bulletLoc[1] = location[1];
 			bulletLoc[2] = location[2];
 			heading = getCameraHeading(); // bullet shoots in the direction we are looking
-			createZombie(1, bulletLoc, 100);
+			createZombie(.7, bulletLoc, 100);
 			bulletLoc[1] -= 2; //lower the bullet hieght a little
 			createBullet(5, heading, bulletLoc);
 			
@@ -128,6 +128,7 @@ void moveBullets()
 
 void moveZombies()
 {
+
 	int i;
 	for(i = 0; i < MAX_ZOMBIES; i++)
 	{
@@ -136,6 +137,7 @@ void moveZombies()
 			moveZombie(i);
 		}
 	}
+	updateZombieHeadings(getCameraLoc());	
 }
 void drawRoom()
 {

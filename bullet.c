@@ -35,7 +35,7 @@ void moveBullet(int id)
 	//printf("moving bullet\n");
 	bullets[id].location[0] += sin(bullets[id].heading) * bullets[id].speed;
 	bullets[id].location[2] -= cos(bullets[id].heading) * bullets[id].speed;
-	printf("%f, %f\n", bullets[id].location[0], bullets[id].location[2]);
+	//printf("%f, %f\n", bullets[id].location[0], bullets[id].location[2]);
 	if(bullets[id].location[0] > ROOM_SIZE || bullets[id].location[0] < (ROOM_SIZE * -1))
 	{
 		bullets[id].alive = 0;
