@@ -118,15 +118,15 @@ void computeDirection()
 
 void checkBounds()
 {
-	if(camera.location[0] < -45.0)
-		camera.location[0] = -45.0;
-	else if(camera.location[0] > 45.0)
-		camera.location[0] = 45.0;
+	if(camera.location[0] < (ROOM_SIZE * -1))
+		camera.location[0] = (ROOM_SIZE * -1);
+	else if(camera.location[0] > ROOM_SIZE)
+		camera.location[0] = ROOM_SIZE;
 		
-	if(camera.location[2] < -45.0)
-		camera.location[2] = -45.0;
-	else if(camera.location[2] > 45.0)
-		camera.location[2] = 45.0;
+	if(camera.location[2] < (ROOM_SIZE * -1))
+		camera.location[2] = (ROOM_SIZE * -1);
+	else if(camera.location[2] > ROOM_SIZE)
+		camera.location[2] = ROOM_SIZE;
 }
 //printing the camera coords to the console
 //for whatever reason this prints out garbage?

@@ -20,4 +20,3 @@ Bullet bullets[MAX_BULLETS];
 
 void createBullet(double pSpeed, double pHeading, double* pLocation);
 void moveBullet(int id);
-Bullet checkAlive(Bullet bullet);

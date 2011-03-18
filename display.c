@@ -51,16 +51,11 @@ void display(void)
 		cameraLoc[0], cameraLoc[1], cameraLoc[2],
 		cameraLook[0], cameraLook[1], cameraLook[2],
 		0,1,0);
-		
-	//printf("%f, %f, %f\n", cameraLoc[0], cameraLoc[1], cameraLoc[2]);
 
-	
 	//draw
 	drawRoom();
 	drawBullets();
 
-
-	
 	glFlush();
 }
 
@@ -132,41 +127,41 @@ void drawRoom()
 	glBegin(GL_QUADS);
 	glColor3f(0.0, 0.0, 0.0);
 	/* Floor */
-	glVertex3f(-50,-1,-50);
-	glVertex3f(50,-1,-50);
-	glVertex3f(50,-1,50);
-	glVertex3f(-50,-1,50);
+	glVertex3f((ROOM_SIZE * -1),-1,(ROOM_SIZE * -1));
+	glVertex3f(ROOM_SIZE,-1,(ROOM_SIZE * -1));
+	glVertex3f(ROOM_SIZE,-1,ROOM_SIZE);
+	glVertex3f((ROOM_SIZE * -1),-1,ROOM_SIZE);
 	glColor3f(1.0, 0.0, 0.0);
 	/* Ceiling */
-	glVertex3f(-50,15,-50);
-	glVertex3f(50,15,-50);
-	glVertex3f(50,15,50);
-	glVertex3f(-50,15,50);
+	glVertex3f((ROOM_SIZE * -1),15,(ROOM_SIZE * -1));
+	glVertex3f(ROOM_SIZE,15,(ROOM_SIZE * -1));
+	glVertex3f(ROOM_SIZE,15,ROOM_SIZE);
+	glVertex3f((ROOM_SIZE * -1),15,ROOM_SIZE);
 	
 	/* Walls */
 	glColor3f(0.0, 1.0, 0.0);
-	glVertex3f(-50,-1,50);
-	glVertex3f(50,-1,50);
-	glVertex3f(50,15,50);
-	glVertex3f(-50,15,50);
+	glVertex3f((ROOM_SIZE * -1),-1,ROOM_SIZE);
+	glVertex3f(ROOM_SIZE,-1,ROOM_SIZE);
+	glVertex3f(ROOM_SIZE,15,ROOM_SIZE);
+	glVertex3f((ROOM_SIZE * -1),15,ROOM_SIZE);
 	
 	glColor3f(0.0, 0.0, 1.0);
-	glVertex3f(-50,-1,-50);
-	glVertex3f(50,-1,-50);
-	glVertex3f(50,15,-50);
-	glVertex3f(-50,15,-50);
+	glVertex3f((ROOM_SIZE * -1),-1,(ROOM_SIZE * -1));
+	glVertex3f(ROOM_SIZE,-1,(ROOM_SIZE * -1));
+	glVertex3f(ROOM_SIZE,15,(ROOM_SIZE * -1));
+	glVertex3f((ROOM_SIZE * -1),15,(ROOM_SIZE * -1));
 	
 	glColor3f(1.0, 1.0, 0.0);
-	glVertex3f(50,15,50);
-	glVertex3f(50,-1,50);
-	glVertex3f(50,-1,-50);
-	glVertex3f(50,15,-50);
+	glVertex3f(ROOM_SIZE,15,ROOM_SIZE);
+	glVertex3f(ROOM_SIZE,-1,ROOM_SIZE);
+	glVertex3f(ROOM_SIZE,-1,(ROOM_SIZE * -1));
+	glVertex3f(ROOM_SIZE,15,(ROOM_SIZE * -1));
 	
 	glColor3f(0.0, 1.0, 1.0);
-	glVertex3f(-50,15,50);
-	glVertex3f(-50,-1,50);
-	glVertex3f(-50,-1,-50);
-	glVertex3f(-50,15,-50);
+	glVertex3f((ROOM_SIZE * -1),15,ROOM_SIZE);
+	glVertex3f((ROOM_SIZE * -1),-1,ROOM_SIZE);
+	glVertex3f((ROOM_SIZE * -1),-1,(ROOM_SIZE * -1));
+	glVertex3f((ROOM_SIZE * -1),15,(ROOM_SIZE * -1));
 	glEnd();
 }
 

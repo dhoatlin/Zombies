@@ -4,6 +4,7 @@
 
 #include <math.h>
 #include <stdio.h>
+#include "display.h"
 #include "bullet.h"
 
 int bulletIndex = 0;
@@ -35,11 +36,11 @@ void moveBullet(int id)
 	bullets[id].location[0] += sin(bullets[id].heading) * bullets[id].speed;
 	bullets[id].location[2] -= cos(bullets[id].heading) * bullets[id].speed;
 	printf("%f, %f\n", bullets[id].location[0], bullets[id].location[2]);
-	if(bullets[id].location[0] > 50 || bullets[id].location[0] < -50)
+	if(bullets[id].location[0] > ROOM_SIZE || bullets[id].location[0] < (ROOM_SIZE * -1))
 	{
 		bullets[id].alive = 0;
 	}
-	if(bullets[id].location[2] > 50 || bullets[id].location[2] < -50)
+	if(bullets[id].location[2] > ROOM_SIZE || bullets[id].location[2] < (ROOM_SIZE * -1))
 	{
 		bullets[id].alive = 0;
 	}	

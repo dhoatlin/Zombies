@@ -2,6 +2,8 @@
 * Header for zombie.c
 */
 
+#define MAX_ZOMBIES 100
+
 typedef struct
 {
 	double health;
@@ -13,5 +15,9 @@ typedef struct
 	double location[3];
 } Zombie;
 
-Zombie createZombie(double pSpeed, double pHeading, double* plocation, double phealth);
+int zombieIndex = 0;
+Zombie zombies[MAX_ZOMBIES];
+
+void createZombie(double pSpeed, double pHeading, double* plocation, double phealth);
+void updateHeadings(double* pLocation);
 
