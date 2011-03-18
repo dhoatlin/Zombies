@@ -8,8 +8,11 @@
 
 #include "zombie.h"
 #include <math.h>
+#include "camera.h"
 
-Zombie spawnZombie(double zSpeed, double* zlocation, double zhealth)
+int zombieIndex = 0;
+
+void createZombie(double zSpeed, double* zlocation, double zhealth)
 {
 	Zombie zombie;
 	
@@ -27,19 +30,42 @@ Zombie spawnZombie(double zSpeed, double* zlocation, double zhealth)
 void updateZombieHeadings(double* pLocation)
 {
 	int i;
-	double xdif, zdif;
+	double xdif, zdif, absX, absZ;
 	for(i = 0; i < MAX_ZOMBIES; i++)
 	{
 		if(zombies[i].alive == 1)
 		{
-			xdif = abs(pLocation[0] - zombies[i].location[0]);
-			zdif = abs(pLocation[2] - zombies[i].location[2]);
-			zombies[i].heading = atan(xdif/zdif);
+			xdif = pLocation[0] - zombies[i].location[0];
+			zdif = pLocation[2] - zombies[i].location[2];
+			absX = abs(xdif);
+			absZ = abs(zdif);
+			
+			//finding quadrant relative to zombie
+			if(xdif > 0 && zdif < 0) //Q1
+			{
+				zombies[i].heading = atan(absZ/absX);
+			}
+			else if(xdif < 0 && zdif < 0) //Q2
+			{
+				zombies[i].heading = atan(absX/absZ) + (PI/2);
+			}
+			else if(xdif < 0 && zdif > 0) //Q3
+			{
+				zombies[i].heading = atan(absZ/absX) + PI;
+			}
+			else if(xdif > 0 && zdif > 0) //Q3
+			{
+				zombies[i].heading = atan(absX/absZ) + (3*PI/2);
+			}
+			else
+			{
+				//if none are true then continue original heading
+			}
 		}
 	}
 }
 
-void moveZombies(int id)
+void moveZombie(int id)
 {
 	zombies[id].location[0] += sin(zombies[id].heading) * zombies[id].speed;
 	zombies[id].location[2] -= cos(zombies[id].heading) * zombies[id].speed;

@@ -15,7 +15,6 @@
 
 int count = 0;
 int keyPressed[256]; //holds key states for movement purposes
-Zombie zombies[MAX_ZOMBIES];
 
 void init(void)
 {
@@ -55,6 +54,7 @@ void display(void)
 	//draw
 	drawRoom();
 	drawBullets();
+	drawZombies();
 
 	glFlush();
 }
@@ -71,15 +71,17 @@ void keyboard(unsigned char key, int x, int y)
 			break;
 		case ' ':
 			//draw bullet here
-			//Y U NO WORK?!?!
-			//printf("drawing bullet\n");
 			location = getCameraLoc(); //bullet starts at camera
 			bulletLoc[0] = location[0];
 			bulletLoc[1] = location[1];
 			bulletLoc[2] = location[2];
 			heading = getCameraHeading(); // bullet shoots in the direction we are looking
+			createZombie(1, bulletLoc, 100);
 			bulletLoc[1] -= 2; //lower the bullet hieght a little
 			createBullet(5, heading, bulletLoc);
+			
+			//drawing zombie on space for now
+			
 			
 			break;
 		default:
@@ -97,6 +99,7 @@ void moveObjects()
 {
 	movePlayer();
 	moveBullets();
+	moveZombies();
 	display();
 	glutTimerFunc(MOVE_TIME, moveObjects, 0);
 }
@@ -120,6 +123,18 @@ void moveBullets()
 	{
 		if(bullets[i].alive == 1)
 			moveBullet(i);
+	}
+}
+
+void moveZombies()
+{
+	int i;
+	for(i = 0; i < MAX_ZOMBIES; i++)
+	{
+		if(zombies[i].alive == 1)
+		{
+			moveZombie(i);
+		}
 	}
 }
 void drawRoom()
@@ -173,15 +188,31 @@ void drawBullets()
 		//only  draw if bullet is 'alive'
 		if(bullets[i].alive == 1)
 		{
-			printf("drawing bullet again: %d\n", i);
+			//printf("drawing bullet again: %d\n", i);
 			glPushMatrix();
 			//translate to bullet position
-			printf("%f, %f, %f\n", bullets[i].location[0], bullets[i].location[1], bullets[i].location[2]);
+			//printf("%f, %f, %f\n", bullets[i].location[0], bullets[i].location[1], bullets[i].location[2]);
 			glTranslatef(bullets[i].location[0], bullets[i].location[1], bullets[i].location[2]);
 			glColor3f(1.0,1.0,1.0);
 			glutSolidSphere(.1, 5, 5);
 			glPopMatrix();
 		}		
+	}
+}
+
+void drawZombies()
+{
+	int i;
+	for(i = 0; i < MAX_ZOMBIES; i++)
+	{
+		if(zombies[i].alive == 1)
+		{
+			glPushMatrix();
+			glTranslatef(zombies[i].location[0], zombies[i].location[1], zombies[i].location[2]);
+			glColor3f(0.5, 0.5, 0.5);
+			glutSolidCube(3);
+			glPopMatrix();
+		}
 	}
 }
 

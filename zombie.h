@@ -15,9 +15,10 @@ typedef struct
 	double location[3];
 } Zombie;
 
-int zombieIndex = 0;
+
 Zombie zombies[MAX_ZOMBIES];
 
-void createZombie(double pSpeed, double pHeading, double* plocation, double phealth);
+void createZombie(double pSpeed, double* plocation, double phealth);
+void moveZombie(int id);
 void updateHeadings(double* pLocation);
 
