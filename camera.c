@@ -83,6 +83,9 @@ void lookRight()
 	{
 		camera.heading = 0.0;
 	}
+	
+	checkBounds();
+	
 	computeDirection();
 }
 
@@ -91,6 +94,9 @@ void backUp()
 {
 	camera.location[0] -= sin(camera.heading) * camera.speed;
 	camera.location[2] += cos(camera.heading) * camera.speed;
+
+	//checking if the move is possible
+	checkBounds();
 	
 	computeDirection();
 }
@@ -109,6 +115,19 @@ void computeDirection()
 	camera.direction[0] = camera.location[0] + sin(camera.heading);
 	camera.direction[2] = camera.location[2] - cos(camera.heading);
 }
+
+void checkBounds()
+{
+	if(camera.location[0] < -45.0)
+		camera.location[0] = -45.0;
+	else if(camera.location[0] > 45.0)
+		camera.location[0] = 45.0;
+		
+	if(camera.location[2] < -45.0)
+		camera.location[2] = -45.0;
+	else if(camera.location[2] > 45.0)
+		camera.location[2] = 45.0;
+}
 //printing the camera coords to the console
 //for whatever reason this prints out garbage?
 void printCam()
@@ -116,12 +135,12 @@ void printCam()
 	int i;
 	for(i = 0; i<3; i++)
 	{
-		printf("cameraLoc: %d\n", camera.location[i]);
+		printf("cameraLoc: %f\n", camera.location[i]);
 	}
 	printf("\n");
 	for(i = 0; i<3; i++)
 	{
-		printf("cameraLook: %d\n", camera.direction[i]);
+		printf("cameraLook: %f\n", camera.direction[i]);
 	}
 	printf("\n-----------\n");
 }

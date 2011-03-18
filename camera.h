@@ -31,3 +31,4 @@ void backUp();
 void moveForward();
 void getCoords();
 void computeDirection();
+void checkBounds();

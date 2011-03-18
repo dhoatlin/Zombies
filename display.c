@@ -15,9 +15,7 @@
 
 int count = 0;
 int keyPressed[256]; //holds key states for movement purposes
-Bullet bullets[MAX_BULLETS];
 Zombie zombies[MAX_ZOMBIES];
-int bulletIndex = 0;
 
 void init(void)
 {
@@ -53,27 +51,15 @@ void display(void)
 		cameraLoc[0], cameraLoc[1], cameraLoc[2],
 		cameraLook[0], cameraLook[1], cameraLook[2],
 		0,1,0);
+		
+	//printf("%f, %f, %f\n", cameraLoc[0], cameraLoc[1], cameraLoc[2]);
 
 	
-	
-	drawRoom();
-	//drawBullets();
-
-	glColor3f(1.0, 0.0, 1.0);   
 	//draw
-	glPushMatrix();
-		glTranslatef(0.0, 5.0, -10.0);  // position in frustum
-		//glScalef(1.0, 2.0, 1.0);        // elongate cube
-		glutWireCube(20.0); //cube 1
-		glPushMatrix();
-			glTranslatef(5.0, 0.0, 3.0);
-			glutWireCube(10.0); //cube 2
-		glPopMatrix();
-		glPushMatrix();
-			glTranslatef(-3.0, 0.0, -3.0);   // move sphere to top of cube
-			glutWireCube(5.0); //cube 3
-		glPopMatrix();
-	glPopMatrix();
+	drawRoom();
+	drawBullets();
+
+
 	
 	glFlush();
 }
@@ -98,8 +84,8 @@ void keyboard(unsigned char key, int x, int y)
 			bulletLoc[2] = location[2];
 			heading = getCameraHeading(); // bullet shoots in the direction we are looking
 			bulletLoc[1] -= 2; //lower the bullet hieght a little
-			bullets[bulletIndex] = createBullet(3, heading, bulletLoc);
-			bulletIndex = (bulletIndex + 1) % MAX_BULLETS;
+			createBullet(5, heading, bulletLoc);
+			
 			break;
 		default:
 			break;
@@ -115,7 +101,7 @@ void keyUp(unsigned char key, int x, int y)
 void moveObjects()
 {
 	movePlayer();
-	//moveBullets();
+	moveBullets();
 	display();
 	glutTimerFunc(MOVE_TIME, moveObjects, 0);
 }
@@ -137,8 +123,8 @@ void moveBullets()
 	int i;
 	for(i = 0; i < MAX_BULLETS; i++)
 	{
-		//printf("moving bullet\n");
-		bullets[i] = moveBullet(bullets[i]);
+		if(bullets[i].alive == 1)
+			moveBullet(i);
 	}
 }
 void drawRoom()
@@ -195,11 +181,11 @@ void drawBullets()
 			printf("drawing bullet again: %d\n", i);
 			glPushMatrix();
 			//translate to bullet position
+			printf("%f, %f, %f\n", bullets[i].location[0], bullets[i].location[1], bullets[i].location[2]);
 			glTranslatef(bullets[i].location[0], bullets[i].location[1], bullets[i].location[2]);
 			glColor3f(1.0,1.0,1.0);
-			glutSolidSphere(1.0, 5, 5);
+			glutSolidSphere(.1, 5, 5);
 			glPopMatrix();
-			display();
 		}		
 	}
 }

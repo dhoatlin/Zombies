@@ -12,6 +12,12 @@ typedef struct
 	
 } Bullet;
 
-Bullet createBullet(double pSpeed, double pHeading, double* plocation);
-Bullet moveBullet(Bullet bullet);
+
+#define MAX_BULLETS 100
+
+Bullet bullets[MAX_BULLETS];
+
+
+void createBullet(double pSpeed, double pHeading, double* pLocation);
+void moveBullet(int id);
 Bullet checkAlive(Bullet bullet);

@@ -3,27 +3,44 @@
 */
 
 #include <math.h>
+#include <stdio.h>
 #include "bullet.h"
 
-Bullet createBullet(double pSpeed, double pHeading, double* plocation)
+int bulletIndex = 0;
+
+void createBullet(double pSpeed, double pHeading, double* pLocation)
 {
-	Bullet bullet = {pSpeed, pHeading, plocation};
+	printf("adding bullet at index %d\n", bulletIndex);
+	//Bullet bullet = bullets[bulletIndex];
+	//bulletIndex = (bulletIndex + 1) % MAX_BULLETS;
+	
+	Bullet bullet;
+	
 	bullet.alive = 1;
-	return bullet;
+	bullet.speed = pSpeed;
+	bullet.heading = pHeading;
+	bullet.location[0] = pLocation[0];
+	bullet.location[1] = pLocation[1];
+	bullet.location[2] = pLocation[2];
+	
+	bullets[bulletIndex] = bullet;
+	bulletIndex = (bulletIndex + 1) % MAX_BULLETS;
+	
+	//printf("bullet created\n");
 }
 
-Bullet moveBullet(Bullet bullet)
+void moveBullet(int id)
 {
-	bullet.location[0] += sin(bullet.heading) * bullet.speed;
-	bullet.location[2] -= cos(bullet.heading) * bullet.speed;
-	//if(bullet.location[0] > 50 || bullet.location[0] < 50)
-	//{
-	//	bullet.alive = 0;
-	//}
-	//if(bullet.location[2] > 50 || bullet.location[2] < 50)
-	//{
-	//	bullet.alive = 0;
-	//}	
-	
-	return bullet;
+	//printf("moving bullet\n");
+	bullets[id].location[0] += sin(bullets[id].heading) * bullets[id].speed;
+	bullets[id].location[2] -= cos(bullets[id].heading) * bullets[id].speed;
+	printf("%f, %f\n", bullets[id].location[0], bullets[id].location[2]);
+	if(bullets[id].location[0] > 50 || bullets[id].location[0] < -50)
+	{
+		bullets[id].alive = 0;
+	}
+	if(bullets[id].location[2] > 50 || bullets[id].location[2] < -50)
+	{
+		bullets[id].alive = 0;
+	}	
 }
