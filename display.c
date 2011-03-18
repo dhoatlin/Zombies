@@ -89,6 +89,7 @@ void keyboard(unsigned char key, int x, int y)
 	double heading;
 	switch (key) {
 		case 27:
+			printf("kills: %d\n", killCount);
 			exit(0);
 			break;
 		case ' ':
@@ -172,6 +173,14 @@ void moveZombies()
 		{
 			moveZombie(i);
 		}
+		//else //zombie at this point is dead, make a new one
+		//{
+		//	double randLoc[3];
+		//	randLoc[0] = (rand() % (ROOM_SIZE * 2)) - ROOM_SIZE;
+		//	randLoc[1] = 3;
+		//	randLoc[2] = (rand() % (ROOM_SIZE * 2)) - ROOM_SIZE;
+		//	createZombie(.7, randLoc, 5);
+		//}
 	}
 	//update the direction of the zombies after moving
 	updateZombieHeadings(getCameraLoc());	
